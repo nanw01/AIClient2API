@@ -771,6 +771,69 @@ The system only performs auto-refresh tasks for providers that are **loaded into
 
 ---
 
+## Coolify Deployment
+
+AIClient2API can be deployed from a GitHub repository in Coolify with the included `Dockerfile`.
+
+Recommended Coolify project name: `AI Gateway` or `AI Infrastructure`.
+
+### GitHub Repository Deployment
+
+1. In Coolify, choose **New Resource** -> **GitHub Repository**.
+2. Select this repository.
+3. Set **Build Pack** to **Dockerfile**.
+4. Set **Domain** to `https://a2.nanlab.xyz`.
+5. Set **Internal Port** to `3000`.
+6. Add a persistent volume: `aiclient2api-configs:/app/configs`.
+7. Add these environment variables:
+
+```env
+NODE_ENV=production
+HOST=0.0.0.0
+PORT=3000
+```
+
+### Docker Compose Deployment
+
+For Coolify Docker Compose deployments, use `docker-compose.coolify.yml`.
+
+```yaml
+services:
+  aiclient2api:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+    volumes:
+      - aiclient2api-configs:/app/configs
+    ports:
+      - "3000:3000"
+
+volumes:
+  aiclient2api-configs:
+```
+
+### Local Docker Verification
+
+```bash
+docker build -t aiclient2api .
+docker run --rm -p 3000:3000 -e HOST=0.0.0.0 -e PORT=3000 aiclient2api
+curl http://localhost:3000/health
+```
+
+Expected response:
+
+```json
+{
+  "status": "ok",
+  "service": "AIClient2API"
+}
+```
+
+---
+
 ## 📄 Open Source License
 
 This project follows the [**GNU General Public License v3 (GPLv3)**](https://www.gnu.org/licenses/gpl-3.0) license. For details, please check the `LICENSE` file in the root directory.

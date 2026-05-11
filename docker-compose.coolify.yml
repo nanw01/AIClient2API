@@ -1,0 +1,15 @@
+services:
+  aiclient2api:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+    volumes:
+      - aiclient2api-configs:/app/configs
+    ports:
+      - "3000:3000"
+
+volumes:
+  aiclient2api-configs:

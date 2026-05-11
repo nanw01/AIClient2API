@@ -135,6 +135,17 @@ export async function initializeConfig(args = process.argv.slice(2), configFileP
         }
     }
 
+    if (process.env.HOST) {
+        currentConfig.HOST = process.env.HOST;
+    }
+    if (process.env.PORT || process.env.SERVER_PORT) {
+        const envPort = parseInt(process.env.PORT || process.env.SERVER_PORT, 10);
+        if (!Number.isNaN(envPort)) {
+            currentConfig.SERVER_PORT = envPort;
+        } else {
+            logger.warn(`[Config Warning] Invalid PORT value '${process.env.PORT || process.env.SERVER_PORT}', using ${currentConfig.SERVER_PORT}.`);
+        }
+    }
 
     // CLI argument definitions: { flag, configKey, type, validValues? }
     // type: 'string' | 'int' | 'bool' | 'enum'
