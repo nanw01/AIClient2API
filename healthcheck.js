@@ -6,7 +6,7 @@
 import http from 'http';
 
 // 从环境变量获取主机和端口，如果没有设置则使用默认值
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.HEALTHCHECK_HOST || '127.0.0.1';
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000;
 
 // 发送HTTP请求到健康检查端点
